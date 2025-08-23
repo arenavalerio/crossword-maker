@@ -3,7 +3,7 @@ import logging
 from crossword import Crossword, CellSlot, Direction, Cell, CoordinateWithDirection
 from words import Words
 
-
+# pylint: disable=too-few-public-methods
 class WordScorer:
     """
     Scores candidate words for a crossword slot based on fitting constraints.

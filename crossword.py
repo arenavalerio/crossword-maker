@@ -38,7 +38,7 @@ class CellSlot:
     Represents a slot in the crossword (a sequence of cells for a word).
     """
 
-    def __init__(self, main_char: Cell, previous_chars: list[Cell], 
+    def __init__(self, main_char: Cell, previous_chars: list[Cell],
                  next_chars: list[Cell], direction: Direction):
         self.main_char = main_char
         self.previous_chars = previous_chars
@@ -109,14 +109,15 @@ class CellSlot:
             regex_parts.append(char.get_regex_part())
         return ''.join(regex_parts)
 
+@dataclass()
 class CrosswordSchema:
     """
     Represents the schema (layout) of the crossword grid.
     """
-    def __init__(self, grid: list[list[str]]):
-        self.x_length = len(grid)
-        self.y_length = len(grid[0])
-        self.grid = grid
+    grid: list[list[str]]
+    def __post_init__(self):
+        self.x_length = len(self.grid)
+        self.y_length = len(self.grid[0])
 
 class Crossword:
     """
@@ -159,7 +160,7 @@ class Crossword:
             print()
         print()
 
-    def get_next_available_coordinate(self, 
+    def get_next_available_coordinate(self,
             initial_position: CoordinateWithDirection) -> CoordinateWithDirection | None:
         """
         Finds the next available coordinate in the grid for placing a word, 
@@ -176,7 +177,7 @@ class Crossword:
             return None
         if self.is_available(next_coordinate):
             return next_coordinate
-        return self.get_next_available_coordinate(next_coordinate)        
+        return self.get_next_available_coordinate(next_coordinate)
 
     def is_available(self, coordinate: CoordinateWithDirection) -> bool:
         """
@@ -216,9 +217,9 @@ class Crossword:
         if main_cell.value == '#':
             return CellSlot(main_cell, previous_cells, following_cells, coordinate.direction)
         if coordinate.direction == Direction.HORIZONTAL:
-            current_y = coordinate.y - 1 
+            current_y = coordinate.y - 1
             while current_y >= 0 and self.grid[coordinate.x][current_y] != '#':
-                previous_cells.insert(0, Cell(coordinate.x, current_y, 
+                previous_cells.insert(0, Cell(coordinate.x, current_y,
                                 self.grid[coordinate.x][current_y]))
                 current_y -= 1
             current_y = coordinate.y + 1

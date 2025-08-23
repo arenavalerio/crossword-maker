@@ -7,7 +7,7 @@ class Direction(Enum):
     """
     Enum for word direction in the crossword (horizontal or vertical).
     """
-    HORIZONTAL = 1,
+    HORIZONTAL = 1
     VERTICAL = 2
 
     @staticmethod
@@ -19,7 +19,6 @@ class Direction(Enum):
         """
         if direction == Direction.HORIZONTAL:
             return Direction.VERTICAL
-        elif direction == Direction.VERTICAL:
+        if direction == Direction.VERTICAL:
             return Direction.HORIZONTAL
-        else:
-            raise ValueError("Invalid direction")
+        raise ValueError("Invalid direction")

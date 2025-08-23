@@ -17,7 +17,7 @@ class CrosswordState:
     Represents the state of the crossword at a given point in the solving process.
     """
 
-    def __init__(self, schema: CrosswordSchema, last_coordinate: CoordinateWithDirection, 
+    def __init__(self, schema: CrosswordSchema, last_coordinate: CoordinateWithDirection,
                  written_words: list[WrittenWord]):
         """
         Initialize a CrosswordState.

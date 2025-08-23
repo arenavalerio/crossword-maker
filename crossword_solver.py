@@ -45,10 +45,12 @@ class CrosswordSolver:
         :return: A solved CrosswordState or None if no solution is found.
         """
         self.iterations += 1
-        if crossword_state.get_crossword().get_next_available_coordinate(crossword_state.last_coordinate) is None:
+        if crossword_state.get_crossword().get_next_available_coordinate(
+            crossword_state.last_coordinate) is None:
             return crossword_state
         if crossword_state.last_coordinate is not None:
-            logging.debug("Position %d, %d", crossword_state.last_coordinate.x, crossword_state.last_coordinate.y)
+            logging.debug("Position %d, %d", crossword_state.last_coordinate.x,
+                          crossword_state.last_coordinate.y)
         else:
             logging.debug("Initial position")
         if len(crossword_state.written_words) > 0:
@@ -65,7 +67,7 @@ class CrosswordSolver:
                 return solution
         logging.debug("Solution is not valid - discarding")
         return None
-            
+
     def _get_next_candidates(self, state: CrosswordState) -> list[WrittenWord]:
         """
         Finds the next candidate words to try for the current slot.

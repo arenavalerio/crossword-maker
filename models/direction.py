@@ -1,4 +1,4 @@
-"""Represebts a direction"""
+"""Represents a direction"""
 
 from enum import Enum
 

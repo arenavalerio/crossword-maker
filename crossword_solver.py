@@ -1,7 +1,8 @@
 """A class to fill a crossword with fixed schema"""
+
 import logging
-from crossword import Crossword, CrosswordSchema, CellSlot
-from crossword_state import CrosswordState, WrittenWord
+from models import CellSlot, Crossword, CrosswordSchema, WrittenWord
+from crossword_state import CrosswordState
 from word_scorer import WordScorer
 from words import Words
 
@@ -84,7 +85,7 @@ class CrosswordSolver:
         written_words_by_score: dict[int, list[str]] = {}
         for word in available_words:
             score = word_scorer.score_word(word)
-            written_word = WrittenWord(next_coordinate, word, score)
+            written_word = WrittenWord(word, next_coordinate, score)
             if score < 0:
                 continue
             if score not in written_words_by_score:

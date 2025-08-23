@@ -1,16 +1,6 @@
 """Represents a crossword during the solving algorithm"""
 
-from dataclasses import dataclass
-from crossword import Crossword, CrosswordSchema, CoordinateWithDirection
-
-@dataclass(frozen=True)
-class WrittenWord:
-    """
-    Represents a word written in the crossword, with its coordinate and score.
-    """
-    word: str
-    coordinate: CoordinateWithDirection
-    score: int
+from models import Crossword, CrosswordSchema, CoordinateWithDirection, WrittenWord
 
 class CrosswordState:
     """

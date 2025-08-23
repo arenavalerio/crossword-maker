@@ -2,7 +2,7 @@
 
 import logging
 import sys
-from crossword import CrosswordSchema
+from models import CrosswordSchema
 from crossword_solver import CrosswordSolver
 from words import Words
 

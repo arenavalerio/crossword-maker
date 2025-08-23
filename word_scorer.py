@@ -1,6 +1,7 @@
 """A scorer of words within a crossword"""
+
 import logging
-from crossword import Crossword, CellSlot, Direction, Cell, CoordinateWithDirection
+from models import Crossword, CellSlot, Direction, Cell, CoordinateWithDirection
 from words import Words
 
 # pylint: disable=too-few-public-methods

@@ -1,20 +1,34 @@
+import logging
 from crossword import Crossword, CrosswordSchema, CellSlot
 from crossword_state import CrosswordState, WrittenWord
 from word_scorer import WordScorer
 from words import Words
-import logging
+
 
 CANDIDATE_WORDS = 100
 RANDOMIZE_CANDIDATES = True
 
 class CrosswordSolver:
+    """
+    Solves a crossword puzzle using backtracking and candidate word scoring.
+    """
 
     def __init__(self, words: Words, schema: CrosswordSchema):
+        """
+        Initialize the solver with a Words object and a CrosswordSchema.
+        :param words: Words object containing the word list.
+        :param schema: CrosswordSchema object representing the crossword grid.
+        """
         self.schema = schema
         self.words = words
         self.iterations = 0
 
     def solve(self) -> Crossword:
+        """
+        Attempts to solve the crossword puzzle.
+        :return: A solved Crossword object.
+        :raises ValueError: If no solution is found.
+        """
         initial_state = CrosswordState.create_initial_state(self.schema)
         final_state = self._solve(initial_state)
         if(final_state is None):
@@ -24,6 +38,11 @@ class CrosswordSolver:
 
 
     def _solve(self, crosswordState: CrosswordState) -> CrosswordState | None:
+        """
+        Recursively attempts to solve the crossword from the given state.
+        :param crosswordState: The current CrosswordState.
+        :return: A solved CrosswordState or None if no solution is found.
+        """
         self.iterations += 1
         if crosswordState.get_crossword().get_next_available_coordinate(crosswordState.last_coordinate) is None:
             return crosswordState
@@ -48,6 +67,11 @@ class CrosswordSolver:
         return None
             
     def _get_next_candidates(self, state: CrosswordState) -> list[WrittenWord]:
+        """
+        Finds the next candidate words to try for the current slot.
+        :param state: The current CrosswordState.
+        :return: List of WrittenWord candidates.
+        """
         crossword = state.get_crossword()
         next_coordinate = crossword.get_next_available_coordinate(state.last_coordinate)
         if next_coordinate is None:
@@ -74,6 +98,11 @@ class CrosswordSolver:
         return result
 
     def get_available_words(self, slot: CellSlot) -> list[str]:
+        """
+        Returns available words for a given slot using regex matching.
+        :param slot: The CellSlot to fill.
+        :return: List of available words.
+        """
         regex = slot.get_regex()
         available_words = self.words.get_words_with_regex(regex, slot.length())
         return available_words

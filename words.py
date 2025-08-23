@@ -3,13 +3,28 @@ import re
 
 
 class Words:
+    """
+    Manages the word list for the crossword, with regex and length-based lookup.
+    """
 
     def __init__(self, file_path: str, size: int, randomize: bool):
+        """
+        Initialize the Words object.
+        :param file_path: Path to the word list file.
+        :param size: Max number of words to return per query.
+        :param randomize: Whether to randomize the word list.
+        """
         self.size = size
         self.randomize = randomize
         self._read_words(file_path)
     
     def get_words_with_regex(self, regex: str, length: int) -> list[str]:
+        """
+        Returns a list of words matching the regex and length.
+        :param regex: Regex pattern to match.
+        :param length: Desired word length.
+        :return: List of matching words.
+        """
         all_words = self.words_by_length[length]
         pattern = re.compile(regex)
         result = []
@@ -24,6 +39,10 @@ class Words:
 
 
     def _read_words(self, file_path):
+        """
+        Reads words from the file and organizes them by length.
+        :param file_path: Path to the word list file.
+        """
         self.words_by_length = {}
         with open(file_path, 'r') as file:
             for line in file:

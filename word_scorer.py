@@ -4,16 +4,30 @@ import logging
 
 
 class WordScorer:
+    """
+    Scores candidate words for a crossword slot based on fitting constraints.
+    """
 
     failing_regexes = []
 
     def __init__(self, crossword: Crossword, slot: CellSlot, words: Words):
+        """
+        Initialize the WordScorer.
+        :param crossword: The Crossword object.
+        :param slot: The CellSlot to score for.
+        :param words: The Words object for word lookup.
+        """
         self.crossword = crossword
         self.slot = slot
         self.words = words
         self.scorecard = {}
 
     def score_word(self, word: str) -> int:
+        """
+        Scores a word for the current slot.
+        :param word: The word to score.
+        :return: Integer score (higher is better, -1 if not fitting).
+        """
         all_cells = self.slot.all_cells()
         length = self.slot.length()
         score = 0
@@ -27,6 +41,14 @@ class WordScorer:
         return score
     
     def _get_fitting_words_count_for_char(self, crossword: Crossword, cell: Cell, direction: Direction, value: str) -> int:
+        """
+        Returns the number of fitting words for a cell and direction with a given value.
+        :param crossword: The Crossword object.
+        :param cell: The Cell to check.
+        :param direction: The direction to check.
+        :param value: The value to fit.
+        :return: Number of fitting words, or -1 if none.
+        """
         slot = crossword.get_slot(CoordinateWithDirection(cell.x, cell.y, direction))
         if slot.is_written():
             logging.debug(f"Skipping ({cell.x}, {cell.y}) as it is already written.")

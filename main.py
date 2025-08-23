@@ -5,6 +5,7 @@ from words import Words
 import sys
 
 grid = [
+    # The crossword grid layout, where '#' is a black square and ' ' is empty.
     [' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' '],
     [' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' '], 
     [' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', '#', ' '], 
@@ -23,6 +24,10 @@ grid = [
 CANDIDATE_WORDS = 100
 RANDOMIZE_WORDS = True
 
+"""
+Main entry point for the crossword solver application.
+Loads the word list, initializes the crossword schema, and solves the puzzle.
+"""
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python main.py <path_to_word_file>")

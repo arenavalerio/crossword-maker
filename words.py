@@ -1,7 +1,9 @@
+"""A class to store and retrieve words"""
+
 import random
 import re
 
-
+# pylint: disable=too-few-public-methods
 class Words:
     """
     Manages the word list for the crossword, with regex and length-based lookup.
@@ -17,7 +19,7 @@ class Words:
         self.size = size
         self.randomize = randomize
         self._read_words(file_path)
-    
+
     def get_words_with_regex(self, regex: str, length: int) -> list[str]:
         """
         Returns a list of words matching the regex and length.
@@ -44,7 +46,7 @@ class Words:
         :param file_path: Path to the word list file.
         """
         self.words_by_length = {}
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding="utf-8") as file:
             for line in file:
                 stripped_word = line.strip()
                 if stripped_word.startswith('#') or not stripped_word:
@@ -54,5 +56,5 @@ class Words:
                     self.words_by_length[word_length] = []
                 self.words_by_length[word_length].append(stripped_word)
         if self.randomize:
-            for key in self.words_by_length.keys():
-                random.shuffle(self.words_by_length[key])
+            for _, word_list in self.words_by_length.items():
+                random.shuffle(word_list)

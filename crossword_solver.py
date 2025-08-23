@@ -1,3 +1,4 @@
+"""A class to fill a crossword with fixed schema"""
 import logging
 from crossword import Crossword, CrosswordSchema, CellSlot
 from crossword_state import CrosswordState, WrittenWord
@@ -31,39 +32,38 @@ class CrosswordSolver:
         """
         initial_state = CrosswordState.create_initial_state(self.schema)
         final_state = self._solve(initial_state)
-        if(final_state is None):
+        if final_state is None:
             raise ValueError('No solution found')
         print(f"Total iterations: {self.iterations}")
         return final_state.get_crossword()
 
 
-    def _solve(self, crosswordState: CrosswordState) -> CrosswordState | None:
+    def _solve(self, crossword_state: CrosswordState) -> CrosswordState | None:
         """
         Recursively attempts to solve the crossword from the given state.
         :param crosswordState: The current CrosswordState.
         :return: A solved CrosswordState or None if no solution is found.
         """
         self.iterations += 1
-        if crosswordState.get_crossword().get_next_available_coordinate(crosswordState.last_coordinate) is None:
-            return crosswordState
-        if crosswordState.last_coordinate is not None:
-            logging.debug(f"Position {crosswordState.last_coordinate.x}, {crosswordState.last_coordinate.y}")
+        if crossword_state.get_crossword().get_next_available_coordinate(crossword_state.last_coordinate) is None:
+            return crossword_state
+        if crossword_state.last_coordinate is not None:
+            logging.debug("Position %d, %d", crossword_state.last_coordinate.x, crossword_state.last_coordinate.y)
         else:
             logging.debug("Initial position")
-        if len(crosswordState.written_words) > 0:
-            logging.debug(f"Searching for Candidates - Word {crosswordState.written_words[-1]}")
+        if len(crossword_state.written_words) > 0:
+            logging.debug("Searching for Candidates - Word %s", crossword_state.written_words[-1])
         else:
             logging.debug("Searching initial candidate")
-        next_candidates = self._get_next_candidates(crosswordState)
-        logging.debug(f"Found candidates {next_candidates}")
+        next_candidates = self._get_next_candidates(crossword_state)
         for candidate in next_candidates:
-            logging.debug(f"Evaluating candidate {candidate.word} - Score {candidate.score}")
-            next_state = crosswordState.new_state(candidate)
+            logging.debug("Evaluating candidate %s - Score %d", candidate.word, candidate.score)
+            next_state = crossword_state.new_state(candidate)
             next_state.get_crossword().display()
             solution = self._solve(next_state)
             if solution is not None:
                 return solution
-        logging.debug(f"Solution is not valid - discarding")
+        logging.debug("Solution is not valid - discarding")
         return None
             
     def _get_next_candidates(self, state: CrosswordState) -> list[WrittenWord]:

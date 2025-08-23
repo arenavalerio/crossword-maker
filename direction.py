@@ -1,3 +1,5 @@
+"""Represebts a direction"""
+
 from enum import Enum
 
 

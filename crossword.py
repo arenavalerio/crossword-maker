@@ -1,6 +1,8 @@
-from direction import Direction
-from dataclasses import dataclass
+"""Classes to represents a crossword domain"""
+
 import copy
+from dataclasses import dataclass
+from direction import Direction
 
 MIN_WORD_LENGTH = 4
 
@@ -24,7 +26,7 @@ class Cell(Coordinate):
     """
     Represents a cell in the crossword grid, with a value (letter or blank).
     """
-    value: str    
+    value: str
     def get_regex_part(self) -> str:
         """
         Returns the regex part for this cell (the value or a wildcard).
@@ -35,7 +37,9 @@ class CellSlot:
     """
     Represents a slot in the crossword (a sequence of cells for a word).
     """
-    def __init__(self, main_char: Cell, previous_chars: list[Cell], next_chars: list[Cell], direction: Direction):
+
+    def __init__(self, main_char: Cell, previous_chars: list[Cell], 
+                 next_chars: list[Cell], direction: Direction):
         self.main_char = main_char
         self.previous_chars = previous_chars
         self.next_chars = next_chars
@@ -49,7 +53,7 @@ class CellSlot:
             if char.value == ' ':
                 return False
         return True
-    
+
     def length(self):
         """
         Returns the length of the slot (number of cells).
@@ -57,25 +61,25 @@ class CellSlot:
         if self.main_char.value == '#':
             return 0
         return len(self.previous_chars) + 1 + len(self.next_chars)
-    
+
     def all_cells(self) -> list[Cell]:
         """
         Returns a list of all cells in the slot.
         """
         return self.previous_chars + [self.main_char] + self.next_chars
-    
+
     def first_cell(self) -> Cell:
         """
         Returns the first cell in the slot.
         """
         return self.previous_chars[0] if len(self.previous_chars) > 0 else self.main_char
-    
+
     def is_first_cell(self) -> bool:
         """
         Checks if this is the first cell in the slot.
         """
         return len(self.previous_chars) == 0
-    
+
     def get_regex(self) -> str:
         """
         Returns a regex string representing the current state of the slot.
@@ -104,7 +108,7 @@ class CellSlot:
         for char in self.next_chars:
             regex_parts.append(char.get_regex_part())
         return ''.join(regex_parts)
-    
+
 class CrosswordSchema:
     """
     Represents the schema (layout) of the crossword grid.
@@ -118,7 +122,7 @@ class Crossword:
     """
     Represents a crossword puzzle instance, with methods to write words and display the grid.
     """
-    
+
     def __init__(self, schema: CrosswordSchema):
         """
         Initializes a Crossword instance with a given schema.
@@ -132,7 +136,8 @@ class Crossword:
         Writes a word into the crossword grid at the specified slot.
         :param word: The word to write.
         :param slot: The CellSlot where the word should be written.
-        :raises ValueError: If the word length does not match the slot or if writing over a black square.
+        :raises ValueError: If the word length does not match the slot
+          or if writing over a black square.
         """
         if len(word) != slot.length():
             raise ValueError("The word length does not match the surrounding characters length.")
@@ -154,9 +159,11 @@ class Crossword:
             print()
         print()
 
-    def get_next_available_coordinate(self, initial_position: CoordinateWithDirection) -> CoordinateWithDirection | None:
+    def get_next_available_coordinate(self, 
+            initial_position: CoordinateWithDirection) -> CoordinateWithDirection | None:
         """
-        Finds the next available coordinate in the grid for placing a word, starting from the given position.
+        Finds the next available coordinate in the grid for placing a word, 
+        starting from the given position.
         :param initial_position: The starting coordinate with direction.
         :return: The next available CoordinateWithDirection or None if no available slot is found.
         """
@@ -196,7 +203,7 @@ class Crossword:
         if x >= self.schema.x_length:
             return None
         return CoordinateWithDirection(x, y, Direction.HORIZONTAL)
-    
+
     def get_slot(self, coordinate: CoordinateWithDirection) -> CellSlot:
         """
         Returns the CellSlot (sequence of cells) for a given coordinate and direction.
@@ -211,19 +218,24 @@ class Crossword:
         if coordinate.direction == Direction.HORIZONTAL:
             current_y = coordinate.y - 1 
             while current_y >= 0 and self.grid[coordinate.x][current_y] != '#':
-                previous_cells.insert(0, Cell(coordinate.x, current_y, self.grid[coordinate.x][current_y]))
+                previous_cells.insert(0, Cell(coordinate.x, current_y, 
+                                self.grid[coordinate.x][current_y]))
                 current_y -= 1
             current_y = coordinate.y + 1
             while current_y < self.schema.y_length and self.grid[coordinate.x][current_y] != '#':
-                following_cells.append(Cell(coordinate.x, current_y, self.grid[coordinate.x][current_y]))
+                following_cells.append(Cell(coordinate.x, current_y,
+                                self.grid[coordinate.x][current_y]))
                 current_y += 1
         elif coordinate.direction == Direction.VERTICAL:
             current_x = coordinate.x - 1
             while current_x >= 0 and self.grid[current_x][coordinate.y] != '#':
-                previous_cells.insert(0, Cell(current_x, coordinate.y, self.grid[current_x][coordinate.y]))
+                previous_cells.insert(0, Cell(current_x, coordinate.y,
+                                self.grid[current_x][coordinate.y]))
                 current_x -= 1
             current_x = coordinate.x + 1
             while current_x < self.schema.x_length and self.grid[current_x][coordinate.y] != '#':
-                following_cells.append(Cell(current_x, coordinate.y, self.grid[current_x][coordinate.y]))
+                following_cells.append(Cell(current_x, coordinate.y,
+                                self.grid[current_x][coordinate.y]))
                 current_x += 1
-        return CellSlot(main_cell, previous_cells, following_cells, coordinate.direction)
+        return CellSlot(main_cell, previous_cells, following_cells,
+                        coordinate.direction)

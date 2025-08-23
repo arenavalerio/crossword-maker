@@ -1,8 +1,11 @@
+"""Entry point"""
+
 import logging
+import sys
 from crossword import CrosswordSchema
 from crossword_solver import CrosswordSolver
 from words import Words
-import sys
+
 
 grid = [
     # The crossword grid layout, where '#' is a black square and ' ' is empty.
@@ -41,13 +44,3 @@ if __name__ == "__main__":
     solver = CrosswordSolver(words, schema)
     crossword = solver.solve()
     crossword.display()
-            
-
-        
-
-
-    
-    
-    
-
-

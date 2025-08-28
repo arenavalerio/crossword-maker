@@ -79,7 +79,8 @@ regexes: list[str] = {'.EUPI', '...G', 'ESIO', 'I...YT', 'EGPO', '..FG',
     '...ZG'}
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Benchmark regex implementations with a word list.")
+    parser = argparse.ArgumentParser(description=
+                                     "Benchmark regex implementations with a word list.")
     parser.add_argument('--words', type=str, default='words.txt', help='Path to words.txt file')
     args = parser.parse_args()
 

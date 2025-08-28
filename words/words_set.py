@@ -9,7 +9,8 @@ class WordsSet:
 
     Attributes:
         length (int): The fixed length of words in this set.
-        words_by_char (dict[int, dict[str, set[str]]]): Maps character positions and characters to sets of words.
+        words_by_char (dict[int, dict[str, set[str]]]): Maps character positions and 
+            characters to sets of words.
         all_words (set[str]): All words in the set.
     """
 
@@ -35,7 +36,7 @@ class WordsSet:
             ValueError: If the word length does not match the expected length.
         """
         if len(word) != self.length:
-            raise ValueError(f"Word length {len(word)} does not match expected length {self.length}.")
+            raise ValueError(f"Word length {len(word)} does not match length {self.length}.")
         self.all_words.add(word)
         for i, char in enumerate(word):
             if i not in self.words_by_char:
@@ -83,13 +84,14 @@ class Words:
         self.size = size
         self.randomize = randomize
         self._read_words(file_path)
-    
+
     def get_words_with_regex(self, regex: str, length: int) -> list[str]:
         """
         Retrieves words of a given length matching a regex-like pattern.
 
         Args:
-            regex (str): A string pattern where fixed letters are specified and other positions are wildcards.
+            regex (str): A string pattern where 
+                fixed letters are specified and other positions are wildcards.
             length (int): The required word length.
 
         Returns:
@@ -110,7 +112,7 @@ class Words:
             if char.isalpha():
                 pattern[i] = char
         return pattern
-    
+
     def _read_words(self, file_path):
         """
         Reads words from the file and organizes them by length.

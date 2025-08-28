@@ -35,7 +35,7 @@ class CrosswordSolver:
         final_state = self._solve(initial_state)
         if final_state is None:
             raise ValueError('No solution found')
-        print(f"Total iterations: {self.iterations}")
+        logging.info("Total iterations: %s", self.iterations)
         return final_state.get_crossword()
 
 

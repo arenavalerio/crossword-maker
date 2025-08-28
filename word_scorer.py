@@ -10,8 +10,6 @@ class WordScorer:
     Scores candidate words for a crossword slot based on fitting constraints.
     """
 
-    failing_regexes = []
-
     def __init__(self, crossword: Crossword, slot: CellSlot, words: Words):
         """
         Initialize the WordScorer.
@@ -32,10 +30,12 @@ class WordScorer:
         """
         all_cells = self.slot.all_cells()
         length = self.slot.length()
+        if length != len(word):
+            raise ValueError("Word length does not match slot length.")
         score = 0
         for i in range(length):
             cell = all_cells[i]
-            value_char= word[i]
+            value_char = word[i]
             fitting_count = self._get_fitting_words_count_for_char(
                 self.crossword, cell, Direction.opposite(self.slot.direction), value_char)
             if fitting_count < 0:
@@ -57,15 +57,12 @@ class WordScorer:
         if slot.is_written():
             logging.debug("Skipping (%d, %d) as it is already written.", cell.x, cell.y)
             return 0
-        if slot.length() < 2:
+        if slot.length() < 4:
             logging.debug("Skipping (%d, %d) due to insufficient length for word.", cell.x, cell.y)
             return 0
         regex = slot.get_tentative_regex(value)
         words_list = self.words.get_words_with_regex(regex, slot.length())
         if len(words_list) == 0:
-            if regex not in self.failing_regexes:
-                logging.debug("No words found for regex %s of length %d.", regex, slot.length)
-                self.failing_regexes.append(regex)
             logging.debug("No words found for regex '%s' of length %d.", regex, slot.length)
             return -1
         return len(words_list)

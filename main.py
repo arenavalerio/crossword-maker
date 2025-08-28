@@ -2,6 +2,7 @@
 
 import logging
 import sys
+import time
 from models import CrosswordSchema
 from crossword_solver import CrosswordSolver
 from words import Words
@@ -42,5 +43,9 @@ if __name__ == "__main__":
     schema = CrosswordSchema(grid)
 
     solver = CrosswordSolver(words, schema)
+    start_time = time.perf_counter()
     crossword = solver.solve()
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
     crossword.display()
+    print(f"Elapsed: {elapsed_time:.0f} seconds")

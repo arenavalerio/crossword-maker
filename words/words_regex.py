@@ -4,7 +4,7 @@ import random
 import re
 
 # pylint: disable=too-few-public-methods
-class Words:
+class WordsRegexSet:
     """
     Manages the word list for the crossword, with regex and length-based lookup.
     """

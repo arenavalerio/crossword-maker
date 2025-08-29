@@ -7,33 +7,13 @@ from models import CrosswordSchema
 from crossword_solver import CrosswordSolver
 from words import Words
 
-
-grid = [
-    # The crossword grid layout, where '#' is a black square and ' ' is empty.
-    [' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', '#', ' '],
-    [' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' '],
-    [' ', '#', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', '#', ' '],
-    [' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' '],
-    [' ', '#', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ']
-]
-
-"""
-Main entry point for the crossword solver application.
-Loads the word list, initializes the crossword schema, and solves the puzzle.
-"""
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=
                                      "Crossword maker from a schema and a list of words")
     parser.add_argument('--words', type=str, default='words.txt',
                         help='Path to words file')
+    parser.add_argument('--grid', type=str, default='grid.json',
+                        help='Path to grid file')
     parser.add_argument('--candidate-words-count', type=int, default=10,
                         help='Number of candidate words to consider per slot')
     parser.add_argument('--randomize', type=bool, default=True,
@@ -42,6 +22,9 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+    import json
+    with open(args.grid, 'r', encoding='utf-8') as f:
+        grid = json.load(f)
     words = Words(args.words, args.candidate_words_count, args.randomize)
     schema = CrosswordSchema(grid)
 

@@ -1,7 +1,7 @@
 """A scorer of words within a crossword"""
 
 import logging
-from models import Crossword, CellSlot, Direction, Cell, CoordinateWithDirection
+from models import Crossword, CellSlot, Direction, Cell, CoordinateWithDirection, MIN_WORD_LENGTH
 from words import Words
 
 # pylint: disable=too-few-public-methods
@@ -57,7 +57,7 @@ class WordScorer:
         if slot.is_written():
             logging.debug("Skipping (%d, %d) as it is already written.", cell.x, cell.y)
             return 0
-        if slot.length() < 4:
+        if slot.length() < MIN_WORD_LENGTH:
             logging.debug("Skipping (%d, %d) due to insufficient length for word.", cell.x, cell.y)
             return 0
         regex = slot.get_tentative_regex(value)

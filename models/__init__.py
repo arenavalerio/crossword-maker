@@ -8,3 +8,5 @@ from .crossword_schema import CrosswordSchema
 from .crossword import Crossword
 from .direction import Direction
 from .written_word import WrittenWord
+from .constants import MIN_WORD_LENGTH
+

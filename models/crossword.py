@@ -7,8 +7,7 @@ from .coordinate import Coordinate
 from .coordinate_with_direction import CoordinateWithDirection
 from .crossword_schema import CrosswordSchema
 from .direction import Direction
-
-MIN_WORD_LENGTH = 4
+from .constants import MIN_WORD_LENGTH
 
 class Crossword:
     """

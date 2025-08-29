@@ -3,6 +3,8 @@
 import random
 import re
 
+from words.file_reader import read_words_from_file
+
 # pylint: disable=too-few-public-methods
 class WordsRegexSet:
     """
@@ -46,15 +48,11 @@ class WordsRegexSet:
         :param file_path: Path to the word list file.
         """
         self.words_by_length = {}
-        with open(file_path, 'r', encoding="utf-8") as file:
-            for line in file:
-                stripped_word = line.strip()
-                if stripped_word.startswith('#') or not stripped_word:
-                    continue
-                word_length = len(stripped_word)
-                if word_length not in self.words_by_length:
-                    self.words_by_length[word_length] = []
-                self.words_by_length[word_length].append(stripped_word)
+        for word in read_words_from_file(file_path):
+            word_length = len(word)
+            if word_length not in self.words_by_length:
+                self.words_by_length[word_length] = []
+            self.words_by_length[word_length].append(word)
         if self.randomize:
             for _, word_list in self.words_by_length.items():
                 random.shuffle(word_list)

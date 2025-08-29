@@ -2,6 +2,8 @@
 
 import random
 
+from words.file_reader import read_words_from_file
+
 class WordsSet:
     """
     Stores a set of words of a fixed length and provides efficient retrieval
@@ -68,7 +70,7 @@ class WordsSet:
                 candidates = candidates & char_candidates
         return candidates
 
-
+# pylint: disable=too-few-public-methods
 class Words:
     """
     Manages the word list for the crossword, with regex and length-based lookup.
@@ -119,12 +121,8 @@ class Words:
         :param file_path: Path to the word list file.
         """
         self.words_by_length: dict[int, WordsSet] = {}
-        with open(file_path, 'r', encoding="utf-8") as file:
-            for line in file:
-                stripped_word = line.strip()
-                if stripped_word.startswith('#') or not stripped_word:
-                    continue
-                word_length = len(stripped_word)
-                if word_length not in self.words_by_length:
-                    self.words_by_length[word_length] = WordsSet(word_length)
-                self.words_by_length[word_length].add_word(stripped_word)
+        for word in read_words_from_file(file_path):
+            word_length = len(word)
+            if word_length not in self.words_by_length:
+                self.words_by_length[word_length] = WordsSet(word_length)
+            self.words_by_length[word_length].add_word(word)

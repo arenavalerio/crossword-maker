@@ -1,7 +1,7 @@
 """Entry point"""
 
+import argparse
 import logging
-import sys
 import time
 from models import CrosswordSchema
 from crossword_solver import CrosswordSolver
@@ -25,21 +25,24 @@ grid = [
     [' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ']
 ]
 
-CANDIDATE_WORDS = 100
-RANDOMIZE_WORDS = True
-
 """
 Main entry point for the crossword solver application.
 Loads the word list, initializes the crossword schema, and solves the puzzle.
 """
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python main.py <path_to_word_file>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description=
+                                     "Crossword maker from a schema and a list of words")
+    parser.add_argument('--words', type=str, default='words.txt',
+                        help='Path to words file')
+    parser.add_argument('--candidate-words-count', type=int, default=10,
+                        help='Number of candidate words to consider per slot')
+    parser.add_argument('--randomize', type=bool, default=True,
+                        help='Whether to randomize the word list')
+    args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    words = Words(sys.argv[1], CANDIDATE_WORDS, RANDOMIZE_WORDS)
+    words = Words(args.words, args.candidate_words_count, args.randomize)
     schema = CrosswordSchema(grid)
 
     solver = CrosswordSolver(words, schema)
